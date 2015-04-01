@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script data-require="jquery@2.1.3" data-semver="2.1.3" src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <link data-require="bootstrap@*" data-semver="3.3.2" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+    <script data-require="bootstrap@*" data-semver="3.3.2" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script data-require="angular.js@*" data-semver="1.4.0-beta.6" src="https://code.angularjs.org/1.4.0-beta.6/angular.js"></script>
+    <script src="//www.parsecdn.com/js/parse-1.4.0.min.js"></script>
+    <!-- <link rel="stylesheet" href="nestable.css"> -->
+    <link rel="stylesheet" href="nestable-style.css">
+    <link rel="stylesheet" href="ListBox.css" />
+    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="angular-ui-tree.css">
+    <script src="angular-ui-tree.min.js"></script>
+    <script src="script.js"></script>
+    <script src="parse.js"></script>
+</head>
+
+<body ng-app="InspectionDetailsViewer">
+    <div ng-include="'header.html'">
+
+    </div>
+    <!-- Top Navigation Bar -->
+    <div class="container" ng-controller="InspectionDetailsController">
+
+        <div id="content">
+            <div class="container">
+                <!-- Breadcrumbs line -->
+                <div class="crumbs">
+                    <ul id="breadcrumbs" class="breadcrumb">
+                        <li>
+                            <i class="icon-home"></i>
+                            <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="current">
+                            <a href="calendar.html" title="">Calendar</a>
+                        </li>
+                    </ul>
+                    <ul class="crumb-buttons">
+                        <li>
+                            <a href="charts.html" title="">
+                                <i class="icon-signal"></i>
+                                <span>Statistics</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /Breadcrumbs line -->
+                <!--=== Page Header ===-->
+                <div class="page-header">
+                    <div class="page-title">
+                        <h3>Dashboard</h3>
+                        <span>Good morning, John!</span>
+                    </div>
+                </div>
+                <!-- /Page Header -->
+                <!--=== Page Content ===-->
+                <div class="col-md-12" id="inputCraneDetails">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="widget box">
+                                <div class="widget-header">
+                                    <h4><i class="icon-reorder"></i>Type</h4>
+                                </div>
+                                <div class="widget-content clearfix">
+                                    <div class="col-md-8">
+                                        <input type="text" id="typeInputBox" ng-model="crane.newCraneType" />
+                                        <select ng-options="craneType.attributes.name for craneType in craneTypes" size=10 ng-model="selectedCrane" ng-change="itemSelected(selectedCrane, 'craneType')" ng-dblclick="addItemToInspectionList(selectedCrane)">
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4" id="craneTypeButtons">
+                                        <div id="sideButtons">
+                                            <div>
+                                                <button id="addButton" ng-click="addCraneType(crane.newCraneType)">Add</button>
+                                            </div>
+                                            <div>
+                                                <button id="deleteButton">Delete</button>
+                                            </div>
+                                            <div>
+                                                <button id="updateButton" ng-click="updateSelectedCraneType()">Update</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="widget box">
+                                <div class="widget-header">
+                                    <h4><i class="icon-reorder"></i>Inspection Criteria</h4>
+                                </div>
+                                <h4>{{error}}</h4>
+                                <div class="widget-content">
+                                    <h3>{{inspectionDetails.crane.name}}</h3>
+                                    <div ui-tree>
+                                        <ol ui-tree-nodes ng-model="inspectionDetails.crane.inspectionPoints">
+                                            <li ng-repeat="item in inspectionDetails.crane.inspectionPoints" ui-tree-node>
+                                                <div ui-tree-handle>
+                                                    {{item.attributes.name}}
+                                                    <button class="select greenButton" ng-click="selectInspectionPoint(item)">Select</button>
+                                                    <button class="pull-right btn btn-danger btn-xs" ng-click="remove(this)">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                    </button>
+                                                </div>
+                                                <ol ui-tree-nodes ng-model="item.attributes.options">
+                                                    <li ng-repeat="item in item.attributes.options" ui-tree-node>
+                                                        <div ng-include="'items_renderer.html'"></div>
+                                                    </li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+
+                                    </div>
+                                </div>
+                                <div>
+                                    <button id="saveButton" class="greenButton saveButton" ng-click="saveList(list.name, selectedList)">Save</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="widget box">
+                                <div class="widget-header">
+                                    <h4><i class="icon-reorder"></i>Saved Lists</h4>
+                                </div>
+                                <div class="widget-content clearfix">
+                                    <div class="col-md-12">
+                                        <select ng-options="list.attributes.name for list in savedLists" ng-model="selectedList" ng-dblclick="addList(selectedList)" size=10>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Page Content -->
+                    </div>
+                </div>
+                <!-- /.container -->
+            </div>
+        </div>
+</body>
+
+</html>

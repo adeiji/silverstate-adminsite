@@ -1,0 +1,16 @@
+.ng-treeView div {
+    margin-bottom: 10px;
+    height: 35px;
+    line-height: 35px;
+    color: #1a1a1a;
+    padding-left: 15px;
+    border-color: #d6cccc;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.ng-treeView div span {
+    vertical-align : middle;
+    line-height: normal;
+    display: inline-block;
+}

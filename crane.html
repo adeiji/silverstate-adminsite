@@ -1,0 +1,31 @@
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="widget box">
+                                <div class="widget-header">
+                                    <h4><i class="icon-reorder"></i>Type</h4>
+                                </div>
+                                <div class="widget-content clearfix">
+                                    <div class="col-md-8">
+                                        <input type="text" id="typeInputBox" ng-model="crane.newCraneType" />
+                                        <select ng-options="craneType.attributes.name for craneType in craneTypes" size=10 ng-model="selectedCrane" ng-change="itemSelected(selectedCrane, 'craneType')" ng-dblclick="addItemToInspectionList(selectedCrane, inspection.crane)">
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4" id="craneTypeButtons">
+                                        <div id="sideButtons">
+                                            <div>
+                                                <button id="addButton" ng-click="addCraneType(crane.newCraneType)">Add</button>
+                                            </div>
+                                            <div>
+                                                <button id="deleteButton">Delete</button>
+                                            </div>
+                                            <div>
+                                                <button id="updateButton" ng-click="updateSelectedCraneType()">Update</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>

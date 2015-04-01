@@ -1,0 +1,74 @@
+/* Styles go here */
+
+div #inputCraneDetails select {
+    width: 100%;
+    border-color: #d6cccc;
+    border-width: 1px;
+}
+div #sideButtons div {
+    margin-bottom: 10px;
+}
+div #sideButtons button {
+    width: 100%;
+    border: none;
+    height: 35px;
+}
+#addButton {
+    background-color: #42bc62;
+    color: white;
+}
+#deleteButton {
+    background-color: #ef2222;
+    color: white;
+}
+#updateButton {
+    background-color: #00acee;
+    color: white;
+}
+input {
+    width: 100%;
+    border-width: 1px;
+    margin-bottom: 10px;
+}
+#listNameInput {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.sideButtons {
+    margin-bottom: 5px;
+    border: none;
+    height: 35px;
+    width: 100%;
+}
+
+.greenButton {
+    background-color: #42bc62;
+    color: white;
+}
+.blueButton {
+    background-color: #00acee;
+    color: white;
+}
+
+.redButton {
+    background-color: #ef2222;
+    color: white;
+}
+
+#listInfoBox {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.saveButton {
+    margin: 10px;
+    width: 100px;
+    border: none;
+    height: 35px;
+}
+
+.select {
+    margin-right: 5px;
+    
+}
