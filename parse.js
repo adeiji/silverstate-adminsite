@@ -78,8 +78,24 @@
                 saveParseObject(list);
             }
             
-            
             return list;
+        }
+
+        var saveInspection = function  (inspection) {
+            var inspectionPoints = inspection.attributes.inspectionPoints; 
+            for (var i = 0; i < inspectionPoints.length; i++) {
+                inspectionPoints[i].fetch();
+                if (inspectionPoints[i].get('options'))
+                {
+                    for (var j = 0; j < inspectionPoints[i].get('options').length; j++) {
+                        inspectionPoints[i].get('options')[j].fetch();                                                
+                    };
+                    
+                }
+            };
+
+            inspection.set("inspectionPoints", inspectionPoints);
+            saveParseObject(inspection);
         }
         
         var saveParseObject = function (object) {
@@ -102,6 +118,7 @@
             saveParseObject : saveParseObject,
             getAllObjectsFromParse : getAllObjectsFromParse,
             createListParseObject : createListParseObject,
+            saveInspection : saveInspection,
             CRANE_OBJECT : CRANE_OBJECT,
             OPTION_OBJECT : OPTION_OBJECT,
             INSPECTION_POINT_OBJECT : INSPECTION_POINT_OBJECT,

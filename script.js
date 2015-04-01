@@ -13,17 +13,42 @@
 
         ParseHandler.init();
 
+        $scope.collapse = function(scope) {
+            scope.toggle();
+        };
+
         $scope.inspectionDetails = {};
 
         var getAllCranes = function() {
             ParseHandler.getAllObjectsFromParse(ParseHandler.CRANE_OBJECT).then(function(cranes) {
                 $scope.craneTypes = cranes;
+                fetchObjects($scope.craneTypes);
             });
         }
 
         ParseHandler.getAllObjectsFromParse(ParseHandler.LIST_OBJECT).then(function(lists) {
             $scope.savedLists = lists;
+            fetchObjects($scope.savedLists);
         })
+
+        // Traverse through the object and fetch in property
+        var fetchObjects = function(object) {
+            if (Array.isArray(object)) {                
+                for (var objectIndex = 0; objectIndex < object.length; objectIndex++) {                    
+                    var currentObject = object[objectIndex];
+                    var keys = Object.keys(currentObject.attributes);
+                    for (var keyIndex = 0; keyIndex < keys.length; keyIndex++) {
+                        var objectAttribute = currentObject.get(keys[keyIndex]);
+                        if (Array.isArray(objectAttribute)) {
+                            for (var subObjectIndex = 0; subObjectIndex < objectAttribute.length; subObjectIndex++) {
+                                objectAttribute[subObjectIndex].fetch();
+                                fetchObjects(objectAttribute[subObjectIndex]);
+                            };
+                        }
+                    };
+                };
+            }
+        }
 
         getAllCranes();
 
@@ -51,7 +76,18 @@
                 $scope.inspectionDetails.crane = {};
             }
 
-            $scope.inspectionDetails.crane.name = selectedCrane.attributes.name;
+            // if (selectedCrane.attributes.inspectionPoints) {
+            //     for (var i = 0; i < selectedCrane.attributes.inspectionPoints.length; i++) {
+            //         var inspectionPoints = selectedCrane.attributes.inspectionPoints[i];
+            //         inspectionPoints[i].fetch();
+            //         if (inspectionPoints[i].attributes.options) {
+            //             for (var j = 0; j < inspectionPoints[i].attributes.options.length; j++) {
+            //                 inspectionPoints[i].attributes.options[j].fetch();
+            //             };
+            //         }
+            //     };
+            // }
+            $scope.inspectionDetails.crane = selectedCrane;
         }
 
         $scope.addCraneType = function(craneName) {
@@ -109,37 +145,42 @@
             });
         }
 
+        // Add a list to the inspection, if it's an option list than add it under an inspection point if it's an inspection point add it under the crane
         $scope.addList = function(selectedList) {
             var listOfItems = selectedList.attributes.listOfItems;
-            for (var i = 0; i < listOfItems.length; i++) {
-                listOfItems[i].fetch();
-            };
+            // for (var i = 0; i < listOfItems.length; i++) {
+            //     listOfItems[i].fetch();
+            // };
 
             for (var i = 0; i < listOfItems.length; i++) {
                 if (selectedList.attributes.type === INSPECTION_POINT) {
-                    if (!$scope.inspectionDetails.crane.inspectionPoints) {
-                        $scope.inspectionDetails.crane.inspectionPoints = [];
+                    if (!$scope.inspectionDetails.crane.attributes.inspectionPoints) {
+                        $scope.inspectionDetails.crane.attributes.inspectionPoints = [];
                     }
 
-                    $scope.inspectionDetails.crane.inspectionPoints.push(listOfItems[i]);
+                    $scope.inspectionDetails.crane.attributes.inspectionPoints.push(listOfItems[i]);
                 } else if (selectedList.attributes.type === OPTION) {
                     if (!$scope.selectedInspectionPoint) {
                         $scope.error = "No Inspection Point Selected";
                     } else if ($scope.selectedInspectionPoint) {
-                        for (var j = 0; j < $scope.inspectionDetails.crane.inspectionPoints.length; j++) {
-                            if ($scope.inspectionDetails.crane.inspectionPoints[j] === $scope.selectedInspectionPoint) {
-                                if (!$scope.inspectionDetails.crane.inspectionPoints[j].attributes.options)
-                                {
-                                    $scope.inspectionDetails.crane.inspectionPoints[j].attributes.options = [];
+                        for (var j = 0; j < $scope.inspectionDetails.crane.attributes.inspectionPoints.length; j++) {
+                            if ($scope.inspectionDetails.crane.attributes.inspectionPoints[j] === $scope.selectedInspectionPoint) {
+                                if (!$scope.inspectionDetails.crane.attributes.inspectionPoints[j].attributes.options) {
+                                    $scope.inspectionDetails.crane.attributes.inspectionPoints[j].attributes.options = [];
                                 }
-                                
-                                $scope.inspectionDetails.crane.inspectionPoints[j].attributes.options.push(listOfItems[i]);
+
+                                $scope.inspectionDetails.crane.attributes.inspectionPoints[j].attributes.options.push(listOfItems[i]);
                                 break;
                             }
                         }
                     }
                 }
             }
+        }
+
+        $scope.saveInspection = function() {
+
+            ParseHandler.saveInspection(angular.copy($scope.inspectionDetails.crane));
         }
 
         $scope.selectInspectionPoint = function(selectedInspectionPoint) {

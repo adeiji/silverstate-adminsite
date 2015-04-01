@@ -95,13 +95,17 @@
                                 </div>
                                 <h4>{{error}}</h4>
                                 <div class="widget-content">
-                                    <h3>{{inspectionDetails.crane.name}}</h3>
+                                    <h3>{{inspectionDetails.crane.attributes.name}}</h3>
                                     <div ui-tree>
-                                        <ol ui-tree-nodes ng-model="inspectionDetails.crane.inspectionPoints">
-                                            <li ng-repeat="item in inspectionDetails.crane.inspectionPoints" ui-tree-node>
+                                        <ol ui-tree-nodes ng-model="inspectionDetails.crane.attributes.inspectionPoints" ng-class="{hidden: collapsed}">
+                                            <li ng-repeat="item in inspectionDetails.crane.attributes.inspectionPoints" ui-tree-node>
                                                 <div ui-tree-handle>
-                                                    {{item.attributes.name}}
+                                                    <a class="btn btn-success btn-xs" ng-if="item.attributes.options && item.attributes.options.length > 0" data-nodrag ng-click="toggle(this)">
+                                                        <span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}">
+                                                        </span>
+                                                    </a>
                                                     <button class="select greenButton" ng-click="selectInspectionPoint(item)">Select</button>
+                                                    {{item.attributes.name}}                                                    
                                                     <button class="pull-right btn btn-danger btn-xs" ng-click="remove(this)">
                                                         <span class="glyphicon glyphicon-remove"></span>
                                                     </button>
@@ -117,7 +121,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <button id="saveButton" class="greenButton saveButton" ng-click="saveList(list.name, selectedList)">Save</button>
+                                    <button id="saveButton" class="greenButton saveButton" ng-click="saveInspection()">Save</button>
                                 </div>
                             </div>
                         </div>
