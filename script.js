@@ -20,15 +20,22 @@
         $scope.inspectionDetails = {};
 
         var getAllCranes = function() {
+            $scope.craneTypes = [];
             ParseHandler.getAllObjectsFromParse(ParseHandler.CRANE_OBJECT).then(function(cranes) {
-                $scope.craneTypes = cranes;
-                for (var i = 0; i < $scope.craneTypes.length; i++) {
-                    fetchObjects($scope.craneTypes[i]);
+
+                for (var i = 0; i < cranes.length; i++) {
+                    fetchObjects(cranes[i]);
+                    setCranes(cranes[i]);
                 };
+
+
             });
         }
 
-
+        var setCranes = function(crane) {
+            fetchObjects(crane);
+            $scope.craneTypes.push(crane);            
+        }
 
         ParseHandler.getAllObjectsFromParse(ParseHandler.LIST_OBJECT).then(function(lists) {
             $scope.savedLists = lists;
@@ -46,8 +53,8 @@
                 if (Array.isArray(objectAttribute)) {
                     for (var subObjectIndex = 0; subObjectIndex < objectAttribute.length; subObjectIndex++) {
                         objectAttribute[subObjectIndex].fetch({
-                            success : fetchObjects
-                        });                    
+                            success: fetchObjects
+                        });
                     };
                 }
             };

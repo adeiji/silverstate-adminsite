@@ -87,10 +87,11 @@
                 inspectionPoints[i].fetch();
                 if (inspectionPoints[i].get('options'))
                 {
-                    for (var j = 0; j < inspectionPoints[i].get('options').length; j++) {
-                        inspectionPoints[i].get('options')[j].fetch();                                                
+                    var options = inspectionPoints[i].get('options');
+                    for (var j = 0; j < options.length; j++) {
+                        options[j].fetch();
                     };
-                    
+                    inspectionPoints[i].set('options', options);
                 }
             };
 
