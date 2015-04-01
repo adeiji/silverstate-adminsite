@@ -22,32 +22,35 @@
         var getAllCranes = function() {
             ParseHandler.getAllObjectsFromParse(ParseHandler.CRANE_OBJECT).then(function(cranes) {
                 $scope.craneTypes = cranes;
-                fetchObjects($scope.craneTypes);
+                for (var i = 0; i < $scope.craneTypes.length; i++) {
+                    fetchObjects($scope.craneTypes[i]);
+                };
             });
         }
 
+
+
         ParseHandler.getAllObjectsFromParse(ParseHandler.LIST_OBJECT).then(function(lists) {
             $scope.savedLists = lists;
-            fetchObjects($scope.savedLists);
+            for (var i = 0; i < $scope.savedLists.length; i++) {
+                fetchObjects($scope.savedLists[i]);
+            };
+
         })
 
         // Traverse through the object and fetch in property
         var fetchObjects = function(object) {
-            if (Array.isArray(object)) {                
-                for (var objectIndex = 0; objectIndex < object.length; objectIndex++) {                    
-                    var currentObject = object[objectIndex];
-                    var keys = Object.keys(currentObject.attributes);
-                    for (var keyIndex = 0; keyIndex < keys.length; keyIndex++) {
-                        var objectAttribute = currentObject.get(keys[keyIndex]);
-                        if (Array.isArray(objectAttribute)) {
-                            for (var subObjectIndex = 0; subObjectIndex < objectAttribute.length; subObjectIndex++) {
-                                objectAttribute[subObjectIndex].fetch();
-                                fetchObjects(objectAttribute[subObjectIndex]);
-                            };
-                        }
+            var keys = Object.keys(object.attributes);
+            for (var keyIndex = 0; keyIndex < keys.length; keyIndex++) {
+                var objectAttribute = object.get(keys[keyIndex]);
+                if (Array.isArray(objectAttribute)) {
+                    for (var subObjectIndex = 0; subObjectIndex < objectAttribute.length; subObjectIndex++) {
+                        objectAttribute[subObjectIndex].fetch({
+                            success : fetchObjects
+                        });                    
                     };
-                };
-            }
+                }
+            };
         }
 
         getAllCranes();
@@ -76,17 +79,6 @@
                 $scope.inspectionDetails.crane = {};
             }
 
-            // if (selectedCrane.attributes.inspectionPoints) {
-            //     for (var i = 0; i < selectedCrane.attributes.inspectionPoints.length; i++) {
-            //         var inspectionPoints = selectedCrane.attributes.inspectionPoints[i];
-            //         inspectionPoints[i].fetch();
-            //         if (inspectionPoints[i].attributes.options) {
-            //             for (var j = 0; j < inspectionPoints[i].attributes.options.length; j++) {
-            //                 inspectionPoints[i].attributes.options[j].fetch();
-            //             };
-            //         }
-            //     };
-            // }
             $scope.inspectionDetails.crane = selectedCrane;
         }
 
@@ -148,10 +140,9 @@
         // Add a list to the inspection, if it's an option list than add it under an inspection point if it's an inspection point add it under the crane
         $scope.addList = function(selectedList) {
             var listOfItems = selectedList.attributes.listOfItems;
-            // for (var i = 0; i < listOfItems.length; i++) {
-            //     listOfItems[i].fetch();
-            // };
-
+            for (var i = 0; i < listOfItems.length; i++) {
+                fetchObjects(listOfItems[i]);
+            };
             for (var i = 0; i < listOfItems.length; i++) {
                 if (selectedList.attributes.type === INSPECTION_POINT) {
                     if (!$scope.inspectionDetails.crane.attributes.inspectionPoints) {
