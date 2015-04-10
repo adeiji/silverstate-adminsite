@@ -56,9 +56,9 @@
                 </div>
                 <!-- /Page Header -->
                 <!--=== Page Content ===-->
-                <div class="col-md-12" id="inputCraneDetails">
+                <div class="col-md-6" id="inputCraneDetails">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="widget box">
                                 <div class="widget-header">
                                     <h4><i class="icon-reorder"></i>Type</h4>
@@ -87,8 +87,21 @@
 
                             </div>
                         </div>
-
-                        <div class="col-md-6">
+                        <div class="col-md-12">
+                            <div class="widget box">
+                                <div class="widget-header">
+                                    <h4><i class="icon-reorder"></i>Saved Lists</h4>
+                                </div>
+                                <div class="widget-content clearfix">
+                                    <input type="text" id="savedListsBox" ng-model="list.name" ng-change="searchLists(list.name)" ng-enter="addSearchedList()" />
+                                    <div class="col-md-12">
+                                        <select ng-options="list.attributes.name for list in savedLists" ng-model="selectedList" ng-dblclick="addList(selectedList)" size=10>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
                             <div class="widget box">
                                 <div class="widget-header">
                                     <h4><i class="icon-reorder"></i>Type</h4>
@@ -114,8 +127,11 @@
 
                             </div>
                         </div>
-
-                        <div class="col-md-6">
+                    </div>                                
+                </div>
+                <div class="col-md-6" id="inspectionCriteriaDiv">
+                    <div class = "row">
+                        <div class="col-md-12">
                             <div class="widget box">
                                 <div class="widget-header">
                                     <h4><i class="icon-reorder"></i>Inspection Criteria</h4>
@@ -152,24 +168,6 @@
                                 </div>
                             </div>
                         </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="widget box">
-                                <div class="widget-header">
-                                    <h4><i class="icon-reorder"></i>Saved Lists</h4>
-                                </div>
-                                <div class="widget-content clearfix">
-                                    <input type="text" id="savedListsBox" ng-model="list.name" ng-change="searchLists(list.name)" ng-enter="addSearchedList()" />
-                                    <div class="col-md-12">
-                                        <select ng-options="list.attributes.name for list in savedLists" ng-model="selectedList" ng-dblclick="addList(selectedList)" size=10>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /Page Content -->
                     </div>
                 </div>
                 <!-- /.container -->
