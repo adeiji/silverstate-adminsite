@@ -46,6 +46,11 @@
 
         })
 
+        $scope.setRequiresDeficiency = function () {
+            $scope.selectedInspectionPoint.set("requiresDeficiency", true);
+            ParseHandler.saveParseObject(angular.copy(($scope.selectedInspectionPoint)));
+        }
+
         $scope.addCustomPrompt = function (prompt) {
             if (!$scope.selectedInspectionPoint.get("prompts"))
             {
