@@ -23,8 +23,7 @@
             $scope.craneTypes = [];
             ParseHandler.getAllObjectsFromParse(ParseHandler.CRANE_OBJECT).then(function(cranes) {
 
-                for (var i = 0; i < cranes.length; i++) {
-                    fetchObjects(cranes[i]);
+                for (var i = 0; i < cranes.length; i++) {                    
                     setCranes(cranes[i]);
                 };
 
@@ -38,23 +37,28 @@
         }
 
         ParseHandler.getAllObjectsFromParse(ParseHandler.LIST_OBJECT).then(function(lists) {
-            $scope.savedLists = lists;
+            $scope.savedLists = lists;            
             for (var i = 0; i < $scope.savedLists.length; i++) {
                 fetchObjects($scope.savedLists[i]);
             };
+
+            $scope.savedListsCopy = $scope.savedLists;
 
         })
 
         // Traverse through the object and fetch in property
         var fetchObjects = function(object) {
+
+            // for (var i = 0; i < object.attributes.inspectionPoints.length; i++) {
+            //     object.attributes   .inspectionPoints[i].fetch();
+            // };
+
             var keys = Object.keys(object.attributes);
             for (var keyIndex = 0; keyIndex < keys.length; keyIndex++) {
                 var objectAttribute = object.get(keys[keyIndex]);
                 if (Array.isArray(objectAttribute)) {
                     for (var subObjectIndex = 0; subObjectIndex < objectAttribute.length; subObjectIndex++) {
-                        objectAttribute[subObjectIndex].fetch({
-                            success: fetchObjects
-                        });
+                        objectAttribute[subObjectIndex].fetch();
                     };
                 }
             };
@@ -142,6 +146,27 @@
                     alert('Failed to save the object: ' + error.description)
                 }
             });
+        }
+
+        $scope.searchLists = function (searchText) {
+           if (searchText != '')
+            {            
+                var searchedItems = [];
+                for (var i = 0; i < $scope.savedListsCopy.length; i++) {
+                    if ($scope.savedListsCopy[i].get("name").toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+                        searchedItems.push($scope.savedListsCopy[i]);
+                    }
+                };
+
+                $scope.savedLists = searchedItems;
+            }
+            else {
+                $scope.savedLists = $scope.savedListsCopy;
+            } 
+        }
+
+        $scope.addSearchedList = function () {
+            addList($scope.savedLists[0]);
         }
 
         // Add a list to the inspection, if it's an option list than add it under an inspection point if it's an inspection point add it under the crane

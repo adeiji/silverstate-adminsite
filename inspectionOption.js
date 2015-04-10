@@ -16,11 +16,19 @@
         var parseObjects = [];
 
         ParseHandler.getAllObjectsFromParse(ParseHandler.INSPECTION_POINT_OBJECT).then(function(inspectionPoints) {
+            for (var i = 0; i < inspectionPoints.length; i++) {
+                inspectionPoints[i].fetch();
+            };
+
             $scope.inspectionPoints = inspectionPoints;
         });
 
         ParseHandler.getAllObjectsFromParse(ParseHandler.OPTION_OBJECT).then(function(options) {
+            for (var i = 0; i < options.length; i++) {
+                options[i].fetch();
+            };
             $scope.options = options;
+            $scope.optionsCopy = options;
         });
 
         $scope.deleteObject = function(array, item, input) {
@@ -59,12 +67,14 @@
             parseObjects.push(option);
 
             $scope.options.push(angular.copy(option));
+            $scope.optionsCopy.push(angular.copy(option));
             $scope.crane.newOption = "";
         }
 
         $scope.itemSelected = function(selectedItem, input) {
             if (input == INSPECTION_POINT) {
                 $scope.crane.newInspectionPoint = selectedItem.attributes.name;
+                $scope.selectedInspectionPoint = selectedItem;
             } else {
                 $scope.crane.newOption = selectedItem.attributes.name;
             }
@@ -103,6 +113,25 @@
             });
         }
 
+        $scope.searchOptions = function (searchText) {
+
+            if (searchText != '')
+            {            
+                var searchedOptions = [];
+                for (var i = 0; i < $scope.optionsCopy.length; i++) {
+                    if ($scope.optionsCopy[i].get("name").toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+                        searchedOptions.push($scope.optionsCopy[i]);
+                    }
+                };
+
+                $scope.options = searchedOptions;
+            }
+            else {
+                $scope.options = $scope.optionsCopy;
+            }
+
+        }
+
         $scope.updateSelectedOption = function() {
             var updatedArray = getUpdatedArray($scope.options, $scope.selectedOption, $scope.crane.newOption);
             $scope.options = [];
@@ -122,9 +151,23 @@
 
             });
         }
-
     };
 
-    app.controller("InspectionDetailsController", InspectionDetailsController);
+
+    // Create the enter key press directive
+    app.directive('ngEnter', function() {
+        return function(scope, element, attrs) {
+            element.bind("keydown keypress", function(event) {
+                if (event.which == 13) {
+                    scope.$apply(function() {
+                        scope.$eval(attrs.ngEnter);
+                    });
+                    event.preventDefault();
+                }
+            })
+        }
+    });
+
+    app.controller("InspectionDetailsController", ['$scope', 'ParseHandler', InspectionDetailsController]);
 
 }());

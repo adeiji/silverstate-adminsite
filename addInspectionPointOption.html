@@ -65,7 +65,7 @@
                                 </div>
                                 <div class="widget-content clearfix">
                                     <div class="col-md-8">
-                                        <input type="text" id="inspectionPointInputBox" ng-model="crane.newInspectionPoint" />
+                                        <input type="text" id="inspectionPointInputBox" ng-model="crane.newInspectionPoint"  ng-enter = "addInspectionPoint(crane.newInspectionPoint)" />
                                         <select ng-options="inspectionPoint.attributes.name for inspectionPoint in inspectionPoints" ng-model="selectedInspectionPoint" ng-change="itemSelected(selectedInspectionPoint, 'inspectionPoint')" ng-dblclick="addItemToInspectionList(selectedInspectionPoint)"
                                         size=10>
 
@@ -77,7 +77,7 @@
                                                 <button id="addButton" ng-click="addInspectionPoint(crane.newInspectionPoint)">Add</button>
                                             </div>
                                             <div>
-                                                <button id="deleteButton">Delete</button>
+                                                <button id="deleteButton" ng-click="deleteObject(inspectionPoints, selectedInspectionPoint, crane.newInspectionPoint)">Delete</button>
                                             </div>
                                             <div>
                                                 <button id="updateButton" ng-click="updateSelectedInspectionPoint()">Update</button>
@@ -97,7 +97,7 @@
                                 </div>
                                 <div class="widget-content clearfix">
                                     <div class="col-md-8">
-                                        <input type="text" id="optionInputBox" ng-model="crane.newOption" />
+                                        <input type="text" id="optionInputBox" ng-model="crane.newOption" ng-enter="addOption(crane.newOption)" ng-change="searchOptions(crane.newOption)" />
                                         <select ng-options="option.attributes.name for option in options" ng-model="selectedOption" ng-change="itemSelected(selectedOption, 'option')" ng-dblclick="addItemToInspectionList(selectedOption, inspection.options)" size=10>
 
                                         </select>

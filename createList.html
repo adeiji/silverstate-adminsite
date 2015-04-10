@@ -75,7 +75,7 @@
                                             <button id="optionListButton" class="blueButton sideButtons" ng-click="showSelectedListTypeInformation('option')">Create Option List</button>                             
                                             <button id="duplicateListButton" class="greenButton sideButtons" ng-click="duplicateList(selectedList)">Duplicate List</button>               
                                             <button id="deleteButton" class="redButton sideButtons" ng-click="deleteList(selectedList)">Delete List</button>
-                                            <button id="resetButton" class="redButton sideButtons">Restart</button>
+                                            <button id="resetButton" class="redButton sideButtons" ng-click="resetList()">Restart</button>
                                         </div>
                                     </div>
                                 </div>
@@ -91,7 +91,7 @@
                                 </div>
                                 <div class="widget-content clearfix">
                                     <div class="col-md-8">
-                                        <input type="text" id="inspectionPointInputBox" ng-model="crane.newInspectionPoint" />
+                                        <input type="text" id="inspectionPointInputBox" ng-model="crane.newInspectionPoint" ng-change="searchInspectionPoints(crane.newInspectionPoint)" ng-enter="addSearchedInspectionPointToList()" />
                                         <select ng-options="inspectionPoint.attributes.name for inspectionPoint in inspectionPoints" ng-model="selectedInspectionPoint" ng-change="itemSelected(selectedInspectionPoint, 'inspectionPoint')" 
                                                 ng-dblclick="addItemToInspectionList(selectedInspectionPoint, 'inspectionPoint')"
                                         size=10>
@@ -110,7 +110,7 @@
                                 </div>
                                 <div class="widget-content clearfix">
                                     <div class="col-md-8">
-                                        <input type="text" id="optionInputBox" ng-model="crane.newOption" />
+                                        <input type="text" id="optionInputBox" ng-model="crane.newOption" ng-change="searchOptions(crane.newOption)" ng-enter="addSearchedItemToList()" />
                                         <select ng-options="option.attributes.name for option in options" ng-model="selectedOption" 
                                                 ng-change="itemSelected(selectedOption, 'option')" ng-dblclick="addItemToInspectionList(selectedOption, 'option')" 
                                                 size=10>

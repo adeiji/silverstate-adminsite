@@ -16,6 +16,7 @@
         var getAllObjectsFromParse = function (parseClass) {
             var ParseClass = Parse.Object.extend(parseClass);
             var query = new Parse.Query(ParseClass);
+            query.limit(600);
             return query.find({
                 success: function (objects) {
                            
@@ -92,11 +93,13 @@
                         options[j].fetch();
                     };
                     inspectionPoints[i].set('options', options);
+                    inspectionPoints[i].save();
                 }
             };
 
             inspection.set("inspectionPoints", inspectionPoints);
-            saveParseObject(inspection);
+            // saveParseObject(inspection);
+            inspection.save();
         }
         
         var saveParseObject = function (object) {

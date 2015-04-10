@@ -91,6 +91,33 @@
                         <div class="col-md-6">
                             <div class="widget box">
                                 <div class="widget-header">
+                                    <h4><i class="icon-reorder"></i>Type</h4>
+                                </div>
+                                <div class="widget-content clearfix">
+                                    <div class="col-md-8">
+                                        <input type="text" id="inspectionPointPromptInput" ng-model="crane.inspectionPoint.prompt" />
+                                    </div>
+                                    <div class="col-md-4" id="craneTypeButtons">
+                                        <div id="sideButtons">
+                                            <div>
+                                                <button id="addButton" ng-click="addCraneType(crane.newCraneType)">Add</button>
+                                            </div>
+                                            <div>
+                                                <button id="deleteButton">Delete</button>
+                                            </div>
+                                            <div>
+                                                <button id="updateButton" ng-click="updateSelectedCraneType()">Update</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="widget box">
+                                <div class="widget-header">
                                     <h4><i class="icon-reorder"></i>Inspection Criteria</h4>
                                 </div>
                                 <h4>{{error}}</h4>
@@ -134,6 +161,7 @@
                                     <h4><i class="icon-reorder"></i>Saved Lists</h4>
                                 </div>
                                 <div class="widget-content clearfix">
+                                    <input type="text" id="savedListsBox" ng-model="list.name" ng-change="searchLists(list.name)" ng-enter="addSearchedList()" />
                                     <div class="col-md-12">
                                         <select ng-options="list.attributes.name for list in savedLists" ng-model="selectedList" ng-dblclick="addList(selectedList)" size=10>
                                         </select>
