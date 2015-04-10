@@ -188,7 +188,7 @@
         $scope.addList = function(selectedList) {
             var listOfItems = selectedList.attributes.listOfItems;
             for (var i = 0; i < listOfItems.length; i++) {
-                fetchObjects(listOfItems[i]);
+                // fetchObjects(listOfItems[i]);
             };
             for (var i = 0; i < listOfItems.length; i++) {
                 if (selectedList.attributes.type === INSPECTION_POINT) {
