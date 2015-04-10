@@ -46,6 +46,16 @@
 
         })
 
+        $scope.addCustomPrompt = function (prompt) {
+            if (!$scope.selectedInspectionPoint.get("prompts"))
+            {
+                $scope.selectedInspectionPoint.set("prompts", []);
+            }
+
+            $scope.selectedInspectionPoint.get("prompts").push({ "name" : prompt });
+            ParseHandler.saveParseObject(angular.copy(($scope.selectedInspectionPoint)));            
+        }
+
         // Traverse through the object and fetch in property
         var fetchObjects = function(object) {
 

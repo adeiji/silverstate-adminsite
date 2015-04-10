@@ -104,22 +104,26 @@
                         <div class="col-md-12">
                             <div class="widget box">
                                 <div class="widget-header">
-                                    <h4><i class="icon-reorder"></i>Type</h4>
+                                    <h4><i class="icon-reorder"></i>Custom Prompts</h4>
                                 </div>
                                 <div class="widget-content clearfix">
                                     <div class="col-md-8">
-                                        <input type="text" id="inspectionPointPromptInput" ng-model="crane.inspectionPoint.prompt" />
+                                        <input type="text" id="inspectionPointPromptInput" ng-model="crane.inspectionPoint.newPrompt" />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select ng-options="prompt.name for prompt in selectedInspectionPoint.attributes.prompts" ng-model="selectedPrompt" size=10>
+                                        </select>
                                     </div>
                                     <div class="col-md-4" id="craneTypeButtons">
                                         <div id="sideButtons">
                                             <div>
-                                                <button id="addButton" ng-click="addCraneType(crane.newCraneType)">Add</button>
+                                                <button id="addButton" ng-click="addCustomPrompt(crane.inspectionPoint.newPrompt)">Add</button>
                                             </div>
                                             <div>
                                                 <button id="deleteButton">Delete</button>
                                             </div>
                                             <div>
-                                                <button id="updateButton" ng-click="updateSelectedCraneType()">Update</button>
+                                                <button id="updateButton" ng-click="updateSelectedInspectionPointPrompt()">Update</button>
                                             </div>
                                         </div>
                                     </div>
