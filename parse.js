@@ -82,6 +82,10 @@
             return list;
         }
 
+        var updateListParseObject = function (listObject) {
+            saveParseObject(listObject);
+        }
+
         var saveInspection = function  (inspection) {
             var inspectionPoints = inspection.attributes.inspectionPoints; 
             for (var i = 0; i < inspectionPoints.length; i++) {
@@ -120,6 +124,7 @@
             createInspectionPointParseObject : createInspectionPointParseObject,
             createOptionParseObject : createOptionParseObject,
             saveParseObject : saveParseObject,
+            updateListParseObject : updateListParseObject,
             getAllObjectsFromParse : getAllObjectsFromParse,
             createListParseObject : createListParseObject,
             saveInspection : saveInspection,

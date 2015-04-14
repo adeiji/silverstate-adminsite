@@ -85,13 +85,21 @@
 
         // Create a list object and save it to Parse
         $scope.saveList = function(listName, selectedList) {
-            if (!$scope.isUpdate) {
+            if (!$scope.selectedList) {
                 $scope.list.name = listName;
                 $scope.list.type = getListType();
                 var listObject = angular.copy(ParseHandler.createListParseObject($scope.list));
                 $scope.savedLists.push(listObject);
-            } else {
-                // angular.copy($scope.list).save();
+            } else if ($scope.selectedList) {
+                angular.copy($scope.selectedist).save(null, {
+                    success : function (item) {
+                        
+                    },
+                    error : function (error) {
+                        alert(error);
+                    }
+                });             
+                
             }
         }
 
@@ -132,9 +140,6 @@
         }
 
         $scope.viewListDetails = function(selectedList) {
-            if (selectedList) {
-                $scope.isUpdate = true;
-            }
 
             $scope.list.listOfItems = [];
             // Get the list of items and then fetch them from the server so that we actually have the Parse Objects
@@ -150,11 +155,12 @@
                     });
                 };
             }
-
-            // for (var i = 0; i < listOfItems.length; i++) {
-            //     $scope.list.listOfItems.push(listOfItems[i]);
-            // };
-
+            else {
+                for (var i = 0; i < listOfItems.length; i++) {
+                    $scope.list.listOfItems.push(listOfItems[i]);
+                }   
+            }
+            $scope.selectedList = selectedList;
             $scope.list.name = selectedList.attributes.name;
 
             if (selectedList.attributes.type === OPTION) {
@@ -195,11 +201,41 @@
             if (!duplicate) {
                 $scope.list.listOfItems.push(selectedItem);
             }
+
+            if ($scope.selectedList)
+            {
+                var listOfItems = $scope.selectedList.get("listOfItems");
+                listOfItems.push(selectedItem);
+                $scope.selectedList.set("listOfItems", listOfItems);
+                angular.copy($scope.selectedList).save(null, {
+                    success : function (item) {
+                        
+                    },
+                    error : function (error) {
+                        alert(error);
+                    }
+                });      
+            }
         }
 
-        $scope.remove = function(selectedItem) {
+        $scope.removeItem = function(selectedItem) {
             var index = $scope.list.listOfItems.indexOf(selectedItem);
             $scope.list.listOfItems.splice(index, 1);
+
+            if ($scope.selectedList)
+            {
+                var listOfItems = $scope.selectedList.get("listOfItems");
+                listOfItems.splice(index, 1);
+                $scope.selectedList.set("listOfItems", listOfItems);
+                angular.copy($scope.selectedList).save(null, {
+                    success : function (item) {
+                        
+                    },
+                    error : function (error) {
+                        alert(error);
+                    }
+                });      
+            }
         }
 
         $scope.duplicateList = function(selectedList) {
@@ -211,6 +247,7 @@
         $scope.resetList = function() {
             $scope.list.listOfItems = [];
             $scope.list.name = "";
+            $scope.selectedList = null;
         }
 
 
