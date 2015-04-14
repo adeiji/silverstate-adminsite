@@ -18,7 +18,7 @@
         };
 
         $scope.inspectionDetails = {};
-
+  
         var getAllCranes = function() {
             $scope.craneTypes = [];
             ParseHandler.getAllObjectsFromParse(ParseHandler.CRANE_OBJECT).then(function(cranes) {
@@ -32,19 +32,17 @@
         }
 
         var setCranes = function(crane) {
-            fetchObjects(crane);
+            
             $scope.craneTypes.push(crane);            
         }
 
-        ParseHandler.getAllObjectsFromParse(ParseHandler.LIST_OBJECT).then(function(lists) {
-            $scope.savedLists = lists;            
-            for (var i = 0; i < $scope.savedLists.length; i++) {
-                fetchObjects($scope.savedLists[i]);
-            };
+         var getSavedLists = function () {
+             ParseHandler.getAllObjectsFromParse(ParseHandler.LIST_OBJECT).then(function(lists) {
+                $scope.savedLists = lists;            
+                $scope.savedListsCopy = $scope.savedLists;
 
-            $scope.savedListsCopy = $scope.savedLists;
-
-        })
+            });    
+         }
 
         $scope.setRequiresDeficiency = function () {
             $scope.selectedInspectionPoint.set("requiresDeficiency", true);
@@ -63,11 +61,6 @@
 
         // Traverse through the object and fetch in property
         var fetchObjects = function(object) {
-
-            // for (var i = 0; i < object.attributes.inspectionPoints.length; i++) {
-            //     object.attributes   .inspectionPoints[i].fetch();
-            // };
-
             var keys = Object.keys(object.attributes);
             for (var keyIndex = 0; keyIndex < keys.length; keyIndex++) {
                 var objectAttribute = object.get(keys[keyIndex]);
@@ -105,7 +98,12 @@
                 $scope.inspectionDetails.crane = {};
             }
 
-            $scope.inspectionDetails.crane = selectedCrane;
+            if (selectedCrane)
+            {
+                $scope.showSavedLists = true;
+                $scope.inspectionDetails.crane = selectedCrane;
+                getSavedLists();
+            }
         }
 
         $scope.addCraneType = function(craneName) {
@@ -123,6 +121,7 @@
         $scope.itemSelected = function(selectedItem, input) {
             if (input == CRANE_TYPE) {
                 $scope.crane.newCraneType = selectedItem.attributes.name;
+                fetchObjects(selectedItem);
             } else if (input == INSPECTION_POINT) {
                 $scope.crane.newInspectionPoint = selectedItem.attributes.name;
             } else {
@@ -188,7 +187,7 @@
         $scope.addList = function(selectedList) {
             var listOfItems = selectedList.attributes.listOfItems;
             for (var i = 0; i < listOfItems.length; i++) {
-                // fetchObjects(listOfItems[i]);
+                fetchObjects(listOfItems[i]);
             };
             for (var i = 0; i < listOfItems.length; i++) {
                 if (selectedList.attributes.type === INSPECTION_POINT) {

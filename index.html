@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="ListBox.css" />
     <link rel="stylesheet" href="main.css" />
     <link rel="stylesheet" href="angular-ui-tree.css">
-    <script src="angular-ui-tree.min.js"></script>
+    <script src="angular-ui-tree.js"></script>
     <script src="script.js"></script>
     <script src="parse.js"></script>
 </head>
@@ -87,7 +87,7 @@
 
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12" ng-show = "showSavedLists">
                             <div class="widget box">
                                 <div class="widget-header">
                                     <h4><i class="icon-reorder"></i>Saved Lists</h4>
@@ -146,11 +146,11 @@
                                 <h4>{{error}}</h4>
                                 <div class="widget-content">
                                     <h3>{{inspectionDetails.crane.attributes.name}}</h3>
-                                    <div ui-tree>
-                                        <ol ui-tree-nodes ng-model="inspectionDetails.crane.attributes.inspectionPoints" ng-class="{hidden: collapsed}">
-                                            <li ng-repeat="item in inspectionDetails.crane.attributes.inspectionPoints" ui-tree-node>
-                                                <div ui-tree-handle>
-                                                    <a class="btn btn-success btn-xs" ng-if="item.attributes.options && item.attributes.options.length > 0" data-nodrag ng-click="toggle(this)">
+                                    <div ui-tree id="tree-root">
+                                        <ol ui-tree-nodes="" ng-model="inspectionDetails.crane.attributes.inspectionPoints" >
+                                            <li ng-repeat="item in inspectionDetails.crane.attributes.inspectionPoints" ui-tree-node data-collapsed="true">
+                                                <div ui-tree-handle class="tree-node tree-node-content" >
+                                                    <a class="btn btn-success btn-xs" ng-if="item.attributes.options && item.attributes.options.length > 0" data-nodrag ng-click="toggle(this); fetchOptions(this)">
                                                         <span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}">
                                                         </span>
                                                     </a>
@@ -160,8 +160,8 @@
                                                         <span class="glyphicon glyphicon-remove"></span>
                                                     </button>
                                                 </div>
-                                                <ol ui-tree-nodes ng-model="item.attributes.options">
-                                                    <li ng-repeat="item in item.attributes.options" ui-tree-node>
+                                                <ol ui-tree-nodes="" ng-model="item.attributes.options" ng-class="{hidden: collapsed}" >
+                                                    <li ng-repeat="item in item.attributes.options" ui-tree-node >
                                                         <div ng-include="'items_renderer.html'"></div>
                                                     </li>
                                                 </ol>
