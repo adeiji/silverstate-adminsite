@@ -65,7 +65,7 @@
                                 </div>
                                 <div class="widget-content clearfix">
                                     <div class="col-md-8">
-                                        <input type="text" id="inspectionPointInputBox" ng-model="crane.newInspectionPoint"  ng-enter = "addInspectionPoint(crane.newInspectionPoint)" />
+                                        <input type="text" id="inspectionPointInputBox" ng-model="crane.newInspectionPoint" ng-change="searchInspectionPoints(crane.newInspectionPoint)" ng-enter = "addInspectionPoint(crane.newInspectionPoint)" />
                                         <select ng-options="inspectionPoint.attributes.name for inspectionPoint in inspectionPoints" ng-model="selectedInspectionPoint" ng-change="itemSelected(selectedInspectionPoint, 'inspectionPoint')" ng-dblclick="addItemToInspectionList(selectedInspectionPoint)"
                                         size=10>
 

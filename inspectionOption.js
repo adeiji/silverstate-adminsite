@@ -21,6 +21,7 @@
             };
 
             $scope.inspectionPoints = inspectionPoints;
+            $scope.inspectionPointsCopy = inspectionPoints;
             $scope.$apply();
         });
 
@@ -115,23 +116,29 @@
             });
         }
 
-        $scope.searchOptions = function (searchText) {
-
+        var addSearchedItemToList = function (searchText, copyOfList) {
             if (searchText != '')
             {            
-                var searchedOptions = [];
-                for (var i = 0; i < $scope.optionsCopy.length; i++) {
-                    if ($scope.optionsCopy[i].get("name").toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
-                        searchedOptions.push($scope.optionsCopy[i]);
+                var searchedList = [];
+                for (var i = 0; i < copyOfList.length; i++) {
+                    if (copyOfList[i].get("name").toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+                        searchedList.push(copyOfList[i]);
                     }
                 };
 
-                $scope.options = searchedOptions;
+                return searchedList;
             }
             else {
-                $scope.options = $scope.optionsCopy;
-            }
+                return copyOfList;
+            }            
+        }
 
+        $scope.searchOptions = function (searchText) {
+            $scope.options = addSearchedItemToList(searchText, $scope.optionsCopy);
+        }
+
+        $scope.searchInspectionPoints = function(searchText) {
+            $scope.inspectionPoints = addSearchedItemToList(searchText, $scope.inspectionPointsCopy);
         }
 
         $scope.updateSelectedOption = function() {
