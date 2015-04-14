@@ -26,7 +26,7 @@
 
         init();
         // Get all the inspection points from Parse
-        ParseHandler.getAllObjectsFromParse(ParseHandler.INSPECTION_POINT_OBJECT).then(function(inspectionPoints) {
+        var getInspectionPoints = ParseHandler.getAllObjectsFromParse(ParseHandler.INSPECTION_POINT_OBJECT).then(function(inspectionPoints) {
             $scope.inspectionPoints = [];
             $scope.inspectionPointsCopy = [];
 
@@ -44,18 +44,14 @@
         }
 
         // Get all the options from Parse
-        ParseHandler.getAllObjectsFromParse(ParseHandler.OPTION_OBJECT).then(function(options) {
+        var getOptions = ParseHandler.getAllObjectsFromParse(ParseHandler.OPTION_OBJECT).then(function(options) {
             $scope.options = options;
             $scope.optionsCopy = options;
         });
 
         ParseHandler.getAllObjectsFromParse(ParseHandler.LIST_OBJECT).then(function(lists) {
-            $scope.savedLists = [];
-            for (var i = 0; i < lists.length; i++) {
-                lists[i].fetch({
-                    success: listFinishedFetch
-                });
-            };
+            $scope.savedLists = lists;
+            
         })
 
         var listFinishedFetch = function(list) {
@@ -133,7 +129,6 @@
             else {
                 $scope.inspectionPoints = $scope.inspectionPointsCopy;
             }
-
         }
 
         $scope.viewListDetails = function(selectedList) {
@@ -144,13 +139,21 @@
             $scope.list.listOfItems = [];
             // Get the list of items and then fetch them from the server so that we actually have the Parse Objects
             var listOfItems = selectedList.get("listOfItems");
-            for (var i = 0; i < listOfItems.length; i++) {
-                listOfItems[i].fetch();
-            };
+            if (!listOfItems[0].attributes.name)
+            {
+                for (var i = 0; i < listOfItems.length; i++) {
+                    listOfItems[i].fetch({
+                        success: function (item) {
+                            $scope.list.listOfItems.push(item);
+                            $scope.$apply();
+                        }
+                    });
+                };
+            }
 
-            for (var i = 0; i < listOfItems.length; i++) {
-                $scope.list.listOfItems.push(listOfItems[i]);
-            };
+            // for (var i = 0; i < listOfItems.length; i++) {
+            //     $scope.list.listOfItems.push(listOfItems[i]);
+            // };
 
             $scope.list.name = selectedList.attributes.name;
 
@@ -159,7 +162,7 @@
                 $scope.isInspectionPointList = false;
             } else if (selectedList.attributes.type === INSPECTION_POINT) {
                 $scope.isInspectionPointList = true;
-                $scope.isOptionList = false;
+                $scope.isOptionList = false;                
             }
 
         }
@@ -215,9 +218,11 @@
             if (type === INSPECTION_POINT) {
                 $scope.isOptionList = false;
                 $scope.isInspectionPointList = true;
+                getInspectionPoints();
             } else if (type === OPTION) {
                 $scope.isOptionList = true;
                 $scope.isInspectionPointList = false;
+                getOptions();
             }
 
             $scope.list = {

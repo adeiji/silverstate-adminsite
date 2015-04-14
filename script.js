@@ -147,7 +147,10 @@
         $scope.itemSelected = function(selectedItem, input) {
             if (input == CRANE_TYPE) {
                 $scope.crane.newCraneType = selectedItem.attributes.name;
-                fetchObjects(selectedItem);
+                if (!selectedItem.attributes.inspectionPoints[0].attributes.name)
+                {
+                    fetchObjects(selectedItem);
+                }
             } else if (input == INSPECTION_POINT) {
                 $scope.crane.newInspectionPoint = selectedItem.attributes.name;
             } else {
@@ -213,7 +216,7 @@
         $scope.addList = function(selectedList) {
             var listOfItems = selectedList.attributes.listOfItems;
             for (var i = 0; i < listOfItems.length; i++) {
-                fetchObjects(listOfItems[i]);
+                listOfItems[i].fetch();
             };
             for (var i = 0; i < listOfItems.length; i++) {
                 if (selectedList.attributes.type === INSPECTION_POINT) {
