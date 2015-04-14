@@ -21,6 +21,7 @@
             };
 
             $scope.inspectionPoints = inspectionPoints;
+            $scope.$apply();
         });
 
         ParseHandler.getAllObjectsFromParse(ParseHandler.OPTION_OBJECT).then(function(options) {
@@ -29,6 +30,7 @@
             };
             $scope.options = options;
             $scope.optionsCopy = options;
+            $scope.$apply();
         });
 
         $scope.deleteObject = function(array, item, input) {

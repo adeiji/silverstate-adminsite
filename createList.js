@@ -51,6 +51,7 @@
 
         ParseHandler.getAllObjectsFromParse(ParseHandler.LIST_OBJECT).then(function(lists) {
             $scope.savedLists = lists;
+            $scope.$apply();
             
         })
 

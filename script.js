@@ -28,6 +28,7 @@
                     setCranes(cranes[i]);
                 };
 
+                $scope.$apply();
 
             });
         }
