@@ -65,6 +65,7 @@
                                 </div>
                                 <div class="widget-content clearfix">
                                     <div class="col-md-7">
+                                        <input type="text" id="optionInputBox" ng-model="crane.listName" ng-change="searchLists(crane.listName)" />
                                         <select ng-options="list.attributes.name for list in savedLists" ng-model="selectedList" 
                                                 ng-change="itemSelected(selectedList, 'list')" ng-dblclick="viewListDetails(selectedList)" size=10>
                                         </select>                                    

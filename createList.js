@@ -51,6 +51,7 @@
 
         ParseHandler.getAllObjectsFromParse(ParseHandler.LIST_OBJECT).then(function(lists) {
             $scope.savedLists = lists;
+            $scope.savedListsCopy = lists;
             $scope.$apply();
             
         })
@@ -104,40 +105,33 @@
             }
         }
 
-        $scope.searchOptions = function (searchText) {
-
+        var addSearchedItemToList = function (searchText, copyOfList) {
             if (searchText != '')
             {            
-                var searchedOptions = [];
-                for (var i = 0; i < $scope.optionsCopy.length; i++) {
-                    if ($scope.optionsCopy[i].get("name").toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
-                        searchedOptions.push($scope.optionsCopy[i]);
+                var searchedList = [];
+                for (var i = 0; i < copyOfList.length; i++) {
+                    if (copyOfList[i].get("name").toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+                        searchedList.push(copyOfList[i]);
                     }
                 };
 
-                $scope.options = searchedOptions;
+                return searchedList;
             }
             else {
-                $scope.options = $scope.optionsCopy;
-            }
+                return copyOfList;
+            }            
         }
 
-        $scope.searchInspectionPoints = function (searchText) {
+        $scope.searchOptions = function (searchText) {
+            $scope.options = addSearchedItemToList(searchText, $scope.optionsCopy);
+        }
 
-            if (searchText != '')
-            {            
-                var searchedInspectionPoints = [];
-                for (var i = 0; i < $scope.inspectionPointsCopy.length; i++) {
-                    if ($scope.inspectionPointsCopy[i].get("name").toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
-                        searchedInspectionPoints.push($scope.inspectionPointsCopy[i]);
-                    }
-                };
+        $scope.searchInspectionPoints = function(searchText) {
+            $scope.inspectionPoints = addSearchedItemToList(searchText, $scope.inspectionPointsCopy);
+        }
 
-                $scope.inspectionPoints = searchedInspectionPoints;
-            }
-            else {
-                $scope.inspectionPoints = $scope.inspectionPointsCopy;
-            }
+        $scope.searchLists = function(searchText) {
+            $scope.savedLists = addSearchedItemToList(searchText, $scope.savedListsCopy);
         }
 
         $scope.viewListDetails = function(selectedList) {
