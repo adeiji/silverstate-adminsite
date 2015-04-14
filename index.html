@@ -150,13 +150,13 @@
                                         <ol ui-tree-nodes="" ng-model="inspectionDetails.crane.attributes.inspectionPoints" >
                                             <li ng-repeat="item in inspectionDetails.crane.attributes.inspectionPoints" ui-tree-node data-collapsed="true">
                                                 <div ui-tree-handle class="tree-node tree-node-content" >
-                                                    <a class="btn btn-success btn-xs" ng-if="item.attributes.options && item.attributes.options.length > 0" data-nodrag ng-click="toggle(this); fetchOptions(this)">
+                                                    <a class="btn btn-success btn-xs" ng-if="item.attributes.options && item.attributes.options.length > 0" data-nodrag ng-click="fetchOptions(this, item)">
                                                         <span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}">
                                                         </span>
                                                     </a>
                                                     <button class="select greenButton" ng-click="selectInspectionPoint(item)">Select</button>
                                                     {{item.attributes.name}}                                                    
-                                                    <button class="pull-right btn btn-danger btn-xs" ng-click="remove(this)">
+                                                    <button class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="remove(this)">
                                                         <span class="glyphicon glyphicon-remove"></span>
                                                     </button>
                                                 </div>

@@ -17,6 +17,7 @@
             scope.toggle();
         };
 
+
         $scope.inspectionDetails = {};
   
         var getAllCranes = function() {
@@ -47,6 +48,31 @@
         $scope.setRequiresDeficiency = function () {
             $scope.selectedInspectionPoint.set("requiresDeficiency", true);
             ParseHandler.saveParseObject(angular.copy(($scope.selectedInspectionPoint)));
+        }
+
+        var getFetchedOptions = function (scope, inspectionPoint, loc) {
+            if (loc < inspectionPoint.attributes.options.length)
+            {
+                inspectionPoint.attributes.options[loc].fetch({
+                    success : function (argument) {
+                        getFetchedOptions(scope, inspectionPoint, loc+1);
+                    }
+                });
+            }
+            else {
+                scope.toggle();
+                scope.$apply();
+            }
+        }
+
+        $scope.fetchOptions = function (scope, inspectionPoint) {
+            if (!inspectionPoint.attributes.options[0].attributes.name)
+            {
+                getFetchedOptions(scope, inspectionPoint, 0);
+            }
+            else {
+                scope.toggle();
+            }
         }
 
         $scope.addCustomPrompt = function (prompt) {
